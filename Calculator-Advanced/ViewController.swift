@@ -1,19 +1,67 @@
 //
 //  ViewController.swift
-//  Calculator-Advanced
+//  Calculator
 //
-//  Created by Abdelrahman Zain on 16/03/2025.
+//  Created by Angela Yu on 10/09/2019.
+//  Copyright © 2019 London App Brewery. All rights reserved.
 //
 
 import UIKit
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
+    @IBOutlet weak var displayLabel: UILabel!
+    
+    private var isFinishedTypingNumber: Bool = true
+    private var displayValue: Double {
+        get{
+            guard let num = Double(displayLabel.text!) else {fatalError("can't convert display label to double")}
+            return num
+        }
+        set {
+            displayLabel.text = String(newValue)
+        }
+    }
+    @IBAction func calcButtonPressed(_ sender: UIButton) {
+        isFinishedTypingNumber = true
+        
+        if let calcMethod = sender.currentTitle {
+            if calcMethod == "+/-" {
+                displayValue *= -1
+            }
+            else if calcMethod == "AC" {
+                displayValue = 0
+            }
+            else if calcMethod == "%" {
+                displayValue /= 100
+            }
+            
+        }
+        //What should happen when a non-number button is pressed
+    
     }
 
+    
+      func numButtonPressed(_ sender: UIButton) {
+        
+        if let numPressed = sender.currentTitle {
+            if isFinishedTypingNumber {
+                displayLabel.text = numPressed
+                isFinishedTypingNumber = false
+            } else {
+                if sender.currentTitle == "."{
+                    
+                    let isInt = floor(displayValue) == displayValue
+                    if !isInt{
+                        return
+                    }
+                }
+                displayLabel.text = displayLabel.text! + numPressed
+            }
+        }
+        //What should happen when a number is entered into the keypad
+    
+    }
 
 }
 
