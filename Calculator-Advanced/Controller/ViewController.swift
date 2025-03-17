@@ -11,7 +11,6 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
-    
     private var isFinishedTypingNumber: Bool = true
     private var displayValue: Double {
         get{
@@ -26,16 +25,10 @@ class ViewController: UIViewController {
         isFinishedTypingNumber = true
         
         if let calcMethod = sender.currentTitle {
-            if calcMethod == "+/-" {
-                displayValue *= -1
-            }
-            else if calcMethod == "AC" {
-                displayValue = 0
-            }
-            else if calcMethod == "%" {
-                displayValue /= 100
-            }
             
+            let calculator = CalculatorLogic(number: displayValue)
+            guard let result = calculator.calculate(symbol: calcMethod) else {fatalError("can't convert display label to double")}
+            displayValue = result
         }
         //What should happen when a non-number button is pressed
     
@@ -45,6 +38,7 @@ class ViewController: UIViewController {
       func numButtonPressed(_ sender: UIButton) {
         
         if let numPressed = sender.currentTitle {
+            
             if isFinishedTypingNumber {
                 displayLabel.text = numPressed
                 isFinishedTypingNumber = false
